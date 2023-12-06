@@ -8,4 +8,4 @@ class Client(models.Model):
         PREMIUM = 3
     name = models.CharField(max_length=100)
     package = models.IntegerField(choices=ClientPackage.choices)
-    slug = AutoSlugField(populate_from="name")
+    slug = AutoSlugField(editable=True, populate_from="name")
