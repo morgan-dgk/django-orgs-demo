@@ -9,6 +9,7 @@ class Client(models.Model):
     name = models.CharField(max_length=100)
     package = models.IntegerField(choices=ClientPackage.choices)
     slug = AutoSlugField(editable=True, populate_from="name")
+    date_created = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
