@@ -1,6 +1,5 @@
 from django import forms
 from django.conf import settings
-from django.contrib.auth.forms import UserCreationForm
 
 from user_auth.models import CustomUser
 from .models import ClientUserProfile
@@ -24,10 +23,16 @@ class ClientUserForm(forms.ModelForm):
             self.fields["email"].initial = self.instance.user.email
 
     def save(self, *args, **kwargs):
-        data = self.cleaned_data
-        user = CustomUser(email=data["email"], first_name=data["first_name"], last_name=data["last_name"])
-        user.save()
-        self.instance.user = user
-        self.instance.organization = data["organization"]
+        if self.instance.pk is None:
+            user = CustomUser(email=self.cleaned_data["email"], 
+                              first_name=self.cleaned_data["first_name"], 
+                              last_name=self.cleaned_data["last_name"])
+            user.save()
+            self.instance.user = user
+        self.instance.organization = self.cleaned_data["organization"]
+        self.instance.user.first_name = self.cleaned_data["first_name"]
+        self.instance.user.last_name = self.cleaned_data["last_name"]
+        self.instance.user.email = self.cleaned_data["email"]
+        self.instance.user.save()
         return super(ClientUserForm, self).save(*args, **kwargs)
         
