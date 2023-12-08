@@ -9,9 +9,4 @@ class ClientAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     prepopulated_fields = {"slug": ["name"]}
 
-
-class ClientUserAdmin(admin.ModelAdmin):
-    form = ClientUserForm 
-
-admin.site.register(ClientUserProfile, ClientUserAdmin)
 admin.site.register(Client, ClientAdmin)
