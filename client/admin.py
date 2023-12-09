@@ -3,6 +3,7 @@ from django.db.models import Count
 from .forms import ClientUserForm
 
 from .models import Client, User 
+from user_auth.models import CustomUser
 
 
 class ClientAdmin(admin.ModelAdmin):
@@ -22,6 +23,14 @@ class ClientAdmin(admin.ModelAdmin):
 
 class ClientUserAdmin(admin.ModelAdmin):
    form = ClientUserForm
+
+   def delete_queryset(self, request, queryset):
+       """Ensure related user_auth.user model is deleted
+       when client.User model is removed.""" 
+       
+       linked_users = CustomUser.objects.filter(id__in=queryset)
+       linked_users.delete()
+       return super().delete_queryset(request, queryset) 
 
    @admin.display(boolean=True)
    def active(self, obj):
