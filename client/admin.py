@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.db.models import Count 
 
-from .models import Client, ClientUserProfile
-from .forms import ClientUserForm   
+from .models import Client 
 
 class ClientAdmin(admin.ModelAdmin):
 
