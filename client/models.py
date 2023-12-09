@@ -24,6 +24,11 @@ class ClientUserProfile(models.Model):
     def __str__(self):
         return self.user.email
 
+    def delete(self, *args, **kwargs):
+        CustomUser.objects.get(pk=self.user_id).delete()
+        super().delete(*args, **kwargs)
+
+
 
 class User(ClientUserProfile):
     class Meta:
