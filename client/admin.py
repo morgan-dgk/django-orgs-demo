@@ -62,14 +62,15 @@ class ClientUserAdmin(admin.ModelAdmin):
        return obj.user.date_joined
 
    def name(self, obj):
-       user = obj.user
-       return f"{user.first_name} {user.last_name}"
+       return f"{obj.user.first_name} {obj.user.last_name}"
 
    def email(self, obj):
        return obj.user
 
    list_display = "email", "name", "organization", "active", "date_created"
    list_filter =  (UserOrgListFilter, UserActiveListFilter)
+
+   search_fields = ("user__email",)
 
     
 
