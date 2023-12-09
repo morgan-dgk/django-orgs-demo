@@ -1,39 +1,8 @@
 from django.contrib import admin
-from django.db.models import Count 
+from django.db.models import Q, Count 
 from .forms import ClientUserForm
 
 from .models import Client, User 
-
-class UserOrgListFilter(admin.SimpleListFilter):
-    title = "Client"
-
-    parameter_name = "org_id"
-
-    def lookups(self, request, model_admin):
-        return Client.objects.values_list("id", "name")
-
-    def queryset(self, request, queryset):
-        if self.value():
-            return queryset.filter(organization__id=self.value())
-        else:
-            return queryset
-
-class UserActiveListFilter(admin.SimpleListFilter):
-    title = "Active"
-
-    parameter_name = "active"
-
-    def lookups(self, request, model_admin):
-        return [
-            ("1", "Yes"),
-            ("0", "No")
-        ]
-
-    def queryset(self, request, queryset):
-        if self.value():
-            return queryset.filter(user__is_active=self.value())
-        else:
-            return queryset
 
 
 class ClientAdmin(admin.ModelAdmin):
@@ -68,7 +37,7 @@ class ClientUserAdmin(admin.ModelAdmin):
        return obj.user
 
    list_display = "email", "name", "organization", "active", "date_created"
-   list_filter =  (UserOrgListFilter, UserActiveListFilter)
+   list_filter =  "user__is_active", "organization__name"
 
    search_fields = ("user__email",)
 
