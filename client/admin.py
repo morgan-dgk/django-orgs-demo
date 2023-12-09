@@ -25,12 +25,18 @@ class ClientUserAdmin(admin.ModelAdmin):
    form = ClientUserForm
 
    def delete_queryset(self, request, queryset):
-       """Ensure related user_auth.user model is deleted
-       when client.User model is removed.""" 
+       """Ensure related user_auth.user models are deleted
+       when client.User models are removed.""" 
        
        linked_users = CustomUser.objects.filter(id__in=queryset)
        linked_users.delete()
        return super().delete_queryset(request, queryset) 
+
+   def delete_model(self, obj, request):
+       """Enure related user_auth.user is deleted when single
+       client.User object is removed."""
+       obj.user.delete()
+       super().delete_model(obj, request)
 
    @admin.display(boolean=True)
    def active(self, obj):
@@ -49,6 +55,8 @@ class ClientUserAdmin(admin.ModelAdmin):
    list_filter =  "user__is_active", "organization__name"
 
    search_fields = ("user__email",)
+
+
 
     
 
