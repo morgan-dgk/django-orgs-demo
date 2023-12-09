@@ -23,3 +23,8 @@ class ClientUserProfile(models.Model):
    
     def __str__(self):
         return self.user.email
+
+
+class User(ClientUserProfile):
+    class Meta:
+        proxy = True
