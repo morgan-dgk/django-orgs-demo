@@ -8,7 +8,7 @@ class ClientUserForm(forms.ModelForm):
     first_name = forms.CharField(max_length=100)
     last_name = forms.CharField(max_length=100)
     email = forms.EmailField()
-    active = forms.BooleanField(required=False)
+    active = forms.BooleanField(required=False, initial=True)
 
     class Meta:
         exclude = ('user',) 
@@ -30,6 +30,7 @@ class ClientUserForm(forms.ModelForm):
                               last_name=self.cleaned_data["last_name"])
             user.save()
             self.instance.user = user
+            
         self.instance.organization = self.cleaned_data["organization"]
         self.instance.user.first_name = self.cleaned_data["first_name"]
         self.instance.user.last_name = self.cleaned_data["last_name"]
