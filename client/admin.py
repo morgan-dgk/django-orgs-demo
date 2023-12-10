@@ -32,11 +32,11 @@ class ClientUserAdmin(admin.ModelAdmin):
        linked_users.delete()
        return super().delete_queryset(request, queryset) 
 
-   def delete_model(self, obj, request):
+   def delete_model(self, request, obj):
        """Enure related user_auth.user is deleted when single
        client.User object is removed."""
        obj.user.delete()
-       super().delete_model(obj, request)
+       super().delete_model(request, obj)
 
    @admin.display(boolean=True)
    def active(self, obj):
