@@ -28,3 +28,5 @@ class ClientUserProfile(models.Model):
 class User(ClientUserProfile):
     class Meta:
         proxy = True
+
+   
