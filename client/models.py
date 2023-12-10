@@ -19,7 +19,7 @@ class Client(models.Model):
 
 class ClientUserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-    organization = models.ForeignKey(Client, on_delete=models.DO_NOTHING)
+    organization = models.ForeignKey(Client, on_delete=models.CASCADE)
    
     def __str__(self):
         return self.user.email
