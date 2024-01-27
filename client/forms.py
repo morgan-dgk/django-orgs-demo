@@ -4,6 +4,8 @@ from django.conf import settings
 from user_auth.models import CustomUser
 from .models import ClientUserProfile
 
+from invitations.backend import CustomInvitations
+
 class ClientUserForm(forms.ModelForm):
     first_name = forms.CharField(max_length=100)
     last_name = forms.CharField(max_length=100)
@@ -25,17 +27,13 @@ class ClientUserForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         if self.instance.pk is None:
-            user = CustomUser(email=self.cleaned_data["email"], 
-                              first_name=self.cleaned_data["first_name"], 
-                              last_name=self.cleaned_data["last_name"])
-            user.save()
-            self.instance.user = user
-            
+            self.instance.user = CustomInvitations().invite_by_email(
+                              email=self.cleaned_data["email"], 
+                              )
         self.instance.organization = self.cleaned_data["organization"]
         self.instance.user.first_name = self.cleaned_data["first_name"]
         self.instance.user.last_name = self.cleaned_data["last_name"]
         self.instance.user.email = self.cleaned_data["email"]
-        self.instance.user.is_active = self.cleaned_data["active"]
         self.instance.user.save()
         return super(ClientUserForm, self).save(*args, **kwargs)
         

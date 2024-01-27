@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="is-vertical-align is-horizontal-align flex-col bg-secondary">
+  <div>
+    <form method="post" action="">
+      {% csrf_token %}
+      {{ form.as_div }}
+    <input type="submit" value="login">
+    <input type="hidden" name="next" value="{{ next }}">
+  </form>
+  </div>
+{# Assumes you set up the password_reset view in your URLconf #}
+{# <p><a href="{% url 'password_reset' %}">Lost password?</a></p> #}
+</div>
+{% endblock %}
